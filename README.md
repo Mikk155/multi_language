@@ -14,7 +14,7 @@ key | value
 Maps that uses this feature:
 Multi-language support | download campaign | spanish | PT/BR | german | french | italian | esperanto
 -----------------------|-------------------|---------|-------|--------|--------|---------|----------
-[Restriction](https://github.com/Mikk155/Sven-Co-op/releases/download/svencoop/svencoop_addon.rar) | [scmapdb](http://scmapdb.com/map:restriction) | V | X | X | X | X | X
+[Restriction](https://github.com/Mikk155/multi_language/releases/download/language/localizations.rar) | [scmapdb](http://scmapdb.com/map:restriction) | V | V | X | X | X | X
 
 HOW TO INSTALL:
 as any other plugin, add multi_language.as to your default_plugins.txt. 
