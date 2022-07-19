@@ -76,18 +76,36 @@ Doing localizations:
 }
 ```
 
--3 let me know that you did a localization.
+-3 tell the script that you did a language. change the value of the language you did to "1"
+0 mean disabled, 1 mean enabled.
+```
+"entity"
+{
+"$i_message" "1"
+"$i_message_spanish" "1"
+"$i_message_portuguese" "1"
+"$i_message_german" "0"
+"$i_message_french" "0"
+"$i_message_italian" "0"
+"$i_message_esperanto" "0"
+"classname" "info_target"
+"targetname" "language"
+}
+```
+
+-4 let me know that you did a localization.
 
 
 once the script is in a certain map. it'll check if a .ent with the same name exist. if yes all game_text and env_message will be removed from the world and your game_text_custom in the .ent file will be generated.
 
 
-Original idea and base entity by [kmkz](https://github.com/kmkz27)
+Original base entity by [kmkz](https://github.com/kmkz27)
 
-Plugin and Improved entity by [Gaftherman](https://github.com/Gaftherman)
+Plugin and Script by [Gaftherman](https://github.com/Gaftherman)
 
 Localizations credits:
 Translator | language | maps
 -----------|----------|-----
-Mikk | Spanish | Restriction
-Teemo | Portuguese | Restriction
+Mikk | [Spanish](https://github.com/Mikk155/multi_language/releases/download/language/localizations.rar) | [Restriction](http://scmapdb.wikidot.com/map:restriction)
+Teemo | [Portuguese](https://github.com/Mikk155/multi_language/releases/download/language/localizations.rar) | [Restriction](http://scmapdb.wikidot.com/map:restriction)
+Mikk | Spanish | Half-Life: Episode-One

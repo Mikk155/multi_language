@@ -1,7 +1,7 @@
 void PluginInit()
 {
 	g_Module.ScriptInfo.SetAuthor( "Gaftherman" );
-	g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Co-op/blob/main/Custom%20content/game_text_custom/README.md" );
+	g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Coop-Multi-language-localizations" );
 
 	g_Hooks.RegisterHook( Hooks::Game::MapChange, @MapChange );
 	g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
@@ -9,66 +9,79 @@ void PluginInit()
     g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @ClientPutInServer );
 }
 
-void MapActivated()
+EHandle InfoTarget;
+
+void MapStart()
 {
 	bool blIsInstalled = g_CustomEntityFuncs.IsCustomEntity( "game_text_custom" );
 
+	for( int i = 0; i < g_Engine.maxEntities; ++i )
+	{
+		edict_t@ edict = @g_EntityFuncs.IndexEnt(i);
+		CBaseEntity@ FindInfoTarget = g_EntityFuncs.Instance( edict );
+
+		if( FindInfoTarget !is null && FindInfoTarget.pev.classname == "info_target" && FindInfoTarget.pev.targetname == "language" )
+		{
+			InfoTarget = FindInfoTarget;
+		}
+	}
+
 	if( blIsInstalled )
 	{
-		g_Scheduler.SetInterval( "SpamsMultilanguage", 100, g_Scheduler.REPEAT_INFINITE_TIMES );
-	
-		for( int i = 0; i < g_Engine.maxEntities; ++i )
-		{
-			edict_t@ edict = @g_EntityFuncs.IndexEnt( i );
-			CBaseEntity@ FindGameText = g_EntityFuncs.Instance( edict );
-		}	
+		g_Scheduler.SetInterval( "SpamsMultilanguage", 140, g_Scheduler.REPEAT_INFINITE_TIMES );
 	}
 }
 
 void SpamsMultilanguage()
 {
-	string Available;
+	string Available = "";
 
-    for( int i = 0; i < g_Engine.maxEntities; ++i )
-    {
-        edict_t@ edict = @g_EntityFuncs.IndexEnt( i );
-        CBaseEntity@ FindGameText = g_EntityFuncs.Instance( edict );
+	if( InfoTarget.GetEntity() !is null )
+	{
+		CBaseEntity@ FindInfoTarget = cast<CBaseEntity@>(InfoTarget);
 
-        if( FindGameText is null && FindGameText.GetClassname() != "game_text_custom" )
-            continue;
+		CustomKeyvalues@ ckLenguage = FindInfoTarget.GetCustomKeyvalues();  
 
-		bool English = g_EntityFuncs.DispatchKeyValue( FindGameText.edict(), "message", "" );
-		bool Spanish = g_EntityFuncs.DispatchKeyValue( FindGameText.edict(), "message_spanish", "" );
-		bool Portuguese = g_EntityFuncs.DispatchKeyValue( FindGameText.edict(), "message_portuguese", "" );
-		bool German = g_EntityFuncs.DispatchKeyValue( FindGameText.edict(), "message_german", "" );
-		bool French = g_EntityFuncs.DispatchKeyValue( FindGameText.edict(), "message_french", "" );
-		bool Italian = g_EntityFuncs.DispatchKeyValue( FindGameText.edict(), "message_italian", "" );
-		bool Esperanto = g_EntityFuncs.DispatchKeyValue( FindGameText.edict(), "message_esperanto", "" );
+		CustomKeyvalue ckEnglish = ckLenguage.GetKeyvalue("$i_message");
+		CustomKeyvalue ckSpanish = ckLenguage.GetKeyvalue("$i_message_spanish");
+		CustomKeyvalue ckPortuguese = ckLenguage.GetKeyvalue("$i_message_portuguese");
+		CustomKeyvalue ckGerman = ckLenguage.GetKeyvalue( "$i_message_german" );
+		CustomKeyvalue ckFrench = ckLenguage.GetKeyvalue( "$i_message_french" );
+		CustomKeyvalue ckItalian = ckLenguage.GetKeyvalue( "$i_message_italian" );
+		CustomKeyvalue ckEsperanto = ckLenguage.GetKeyvalue( "$i_message_esperanto" );
 
-		if( !English )
-			Available = "English";
+		int English = ckEnglish.GetInteger();
+		int Spanish = ckSpanish.GetInteger();
+		int Portuguese = ckPortuguese.GetInteger();
+		int German = ckGerman.GetInteger();
+		int French = ckFrench.GetInteger();
+		int Italian = ckItalian.GetInteger();
+		int Esperanto = ckEsperanto.GetInteger();
 
-		if( !Spanish )
-			Available = Available + " || Spanish";
+		if( English == 1 )
+			Available = Available == "" ? "English" : Available + " || " + "English";
 
-		if( !Portuguese )
-			Available = Available + " || Portuguese";
+		if( Spanish == 1 )
+			Available = Available == "" ? "Spanish" : Available + " || " + "Spanish";
 
-		if( !German )
-			Available = Available + " || German";
+		if( Portuguese == 1 )
+			Available = Available == "" ? "Portuguese" : Available + " || " + "Portuguese";
 
-		if( !French )
-			Available = Available + " || French";
+		if( German == 1 )
+			Available = Available == "" ? "German" : Available + " || " + "German";
 
-		if( !Italian )
-			Available = Available + " || Italian";
+		if( French == 1 )
+			Available = Available == "" ? "French" : Available + " || " + "French";
 
-		if( !Esperanto )
-			Available = Available + " || Esperanto";
-    }
+		if( Italian == 1 )
+			Available = Available == "" ? "Italian" : Available + " || " + "Italian";
+
+		if( Esperanto == 1 )
+			Available = Available == "" ? "Esperanto" : Available + " || " + "Esperanto";
+	}
 
 	g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "[Multi-Language] This map supports multi-language, use /language (language).\n" );
-	g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "Available:" +Available+ "\n" );
+	g_PlayerFuncs.ClientPrintAll( HUD_PRINTTALK, "Available: " +Available+ "\n" );
 }
 
 dictionary g_PlayerKeepLenguage;
@@ -114,11 +127,12 @@ HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
 	}
     else
     {
-     	CustomKeyvalues@ ckLenguage = pPlayer.GetCustomKeyvalues();
-	    ckLenguage.SetKeyvalue("$f_lenguage", 0.0);   
+		CustomKeyvalues@ ckLenguage = pPlayer.GetCustomKeyvalues();
+		CustomKeyvalue ckLenguageIs = ckLenguage.GetKeyvalue("$f_lenguage");
+		int iLanguage = int(ckLenguageIs.GetFloat());
 
-        PlayerKeepLenguageData pData;
-		pData.lenguage = 0.0;
+		PlayerKeepLenguageData pData;
+		pData.lenguage = iLanguage;
 		g_PlayerKeepLenguage[SteamID] = pData;
     }
 

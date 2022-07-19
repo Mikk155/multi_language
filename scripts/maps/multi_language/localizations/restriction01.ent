@@ -1,5 +1,17 @@
 "entity"
 {
+"$i_message" "1"
+"$i_message_spanish" "1"
+"$i_message_portuguese" "1"
+"$i_message_german" "0"
+"$i_message_french" "0"
+"$i_message_italian" "0"
+"$i_message_esperanto" "0"
+"classname" "info_target"
+"targetname" "language"
+}
+"entity"
+{
 "message_portuguese" "Voce encontrou o cartao"
 "message_spanish" "Encontraste la tarjeta"
 "message" "You found a keycode !"
@@ -315,6 +327,7 @@
 {
 "message" "This map supports Multi-language. say /language (language)"
 "message_spanish" "Traduccion: Mikk"
+"message_portuguese" "Legendado: Teemo"
 "targetname" "Multi_language_Placeholder"
 "channel" "2"
 "fxtime" "0.25"
