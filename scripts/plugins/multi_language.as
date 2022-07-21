@@ -1,7 +1,7 @@
 void PluginInit()
 {
 	g_Module.ScriptInfo.SetAuthor( "Gaftherman" );
-	g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/Sven-Coop-Multi-language-localizations" );
+	g_Module.ScriptInfo.SetContactInfo( "https://github.com/Mikk155/multi_language" );
 
 	g_Hooks.RegisterHook( Hooks::Game::MapChange, @MapChange );
 	g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
